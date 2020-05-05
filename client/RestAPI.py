@@ -56,7 +56,7 @@ class RESTApi(object):
         # check if matlab class-hierarchy simnet is built
         dict_obj = json.loads(res.content.decode())
         _LOG.info(dict_obj['lname'])
-        return dict_obj
+        return dict_obj['lname']
 
     def get_pipe(self, pipe, prop):
 
@@ -216,7 +216,7 @@ class RESTApi(object):
 def defaulttest():
     # test script
     # connect and load flowsheet
-    url = "http://127.0.0.1:5000/"
+    url = "http://178.164.32.34:5001/"
     flowsheet = 'ExampleAbsorber'
 
     # setup class
