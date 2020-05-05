@@ -10,7 +10,7 @@ flask = "*"
 black = "*"
 simplejson = "*"
 connexion = "==2.7.0"
-swagger-ui-py = "*"
+swagger-ui-bundle = "*"
 
 [requires]
 python_version = "3.7"
