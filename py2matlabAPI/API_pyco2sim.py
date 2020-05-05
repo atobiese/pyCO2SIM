@@ -8,7 +8,6 @@ Options of running co2sim as a service externally by using set restful-API signa
 @atobiese
 """
 
-import matlab.engine
 from definitions import ROOT_DIR
 
 CURRENT_DIR = ROOT_DIR + '\\py2matlabAPI'  # path to store system generated conf files
@@ -24,6 +23,7 @@ class ApiMatlab(object):
 
     def connect(self, flowsheetname):
         self.flowsheetname = flowsheetname
+        import matlab.engine
         eng = matlab.engine.start_matlab()
 
         # set_pipeup matlab behind server (only needs to be done on connect(?)

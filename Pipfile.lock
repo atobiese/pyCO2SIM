@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "dff6348e0435bdc3c3e69476896f3dc673206220ff98b30eb8f4544a0d53167d"
+            "sha256": "815e687788ffc1ad6f48d65988498836ef0f8c157febf458ea2871214251b1e1"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -68,11 +68,11 @@
         },
         "connexion": {
             "hashes": [
-                "sha256:bf32bfae6af337cfa4a8489c21516adbe5c50e3f8dc0b7ed2394ce8dde218018",
-                "sha256:c568e579f84be808e387dcb8570bb00a536891be1318718a0dad3ba90f034191"
+                "sha256:1ccfac57d4bb7adf4295ba6f5e48f5a1f66057df6a0713417766c9b5235182ee",
+                "sha256:5439e9659a89c4380d93a07acfbf3380d70be4130574de8881e5f0dfec7ad0e2"
             ],
             "index": "pypi",
-            "version": "==2.6.0"
+            "version": "==2.7.0"
         },
         "flask": {
             "hashes": [
@@ -250,6 +250,13 @@
                 "sha256:8f3cd2e254d8f793e7f3d6d9df77b92252b52637291d0f0da013c76ea2724b6c"
             ],
             "version": "==1.14.0"
+        },
+        "swagger-ui-py": {
+            "hashes": [
+                "sha256:1b7a34da272d3eab735ba42ed93a5bf93b1bdb089225d384bcaca8297ddf4833"
+            ],
+            "index": "pypi",
+            "version": "==0.3.0"
         },
         "toml": {
             "hashes": [

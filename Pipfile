@@ -7,9 +7,10 @@ verify_ssl = true
 
 [packages]
 flask = "*"
-connexion = "==2.6.0"
 black = "*"
 simplejson = "*"
+connexion = "==2.7.0"
+swagger-ui-py = "*"
 
 [requires]
 python_version = "3.7"
