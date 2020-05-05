@@ -1,0 +1,461 @@
+swagger: "2.0"
+info:
+  description: Methods are described below
+  version: "1.0.0"
+  title: API for CO2SIM
+consumes:
+  - application/json
+produces:
+  - application/json
+
+basePath: /api
+
+# Paths
+paths:
+  /items:
+    get:
+      operationId: items.read_all
+      tags:
+        - Items
+      summary: Read the current logged simulations
+      description: Read the list of items
+      parameters:
+        - name: length
+          in: query
+          type: integer
+          description: Number of item to get from items
+          required: false
+        - name: offset
+          in: query
+          type: integer
+          description: Offset from beginning of list where to start gathering items
+          required: false
+      responses:
+        200:
+          description: Successfully read items list operation
+          schema:
+            type: array
+            items:
+              properties:
+                fname:
+                  type: string
+                lname:
+                  type: string
+                timestamp:
+                  type: string
+
+    post:
+      operationId: items.create
+      tags:
+        - Items
+      summary: runs simlation
+      description: note that co2sim must be loaded.
+      parameters:
+        - name: item_
+          in: body
+          description: |
+            # This call solves the flowsheet. Note that co2sim must be loaded prior to this.
+            # Example call:
+            #### Copy the signature below into the prop form.
+            ### The unit must exit in the flow sheet.
+            ---
+
+            ```
+            {
+              "fname": "-"
+            }
+            ```
+
+            Return:
+            dict (can be multi leveled)
+
+            Reference flowsheet:
+            ![Swagger logo](https://raw.githubusercontent.com/swagger-api/swagger-ui/master/dist/favicon-32x32.png)
+
+
+          required: True
+          schema:
+            type: object
+            properties:
+              fname:
+                type: string
+                description: First column in item
+      responses:
+        201:
+          description: Successfully created item_ in list
+
+  /items/{lname}:
+    get:
+      operationId: items.read_one
+      tags:
+        - Items
+      summary: Read one item_ from the items list
+      description: Read one item_ from the items list
+      parameters:
+        - name: lname
+          in: path
+          description: Last name of the item_ to get from the list
+          type: string
+          required: True
+      responses:
+        200:
+          description: Successfully read item_ from items list operation
+          schema:
+            properties:
+              fname:
+                type: string
+              lname:
+                type: string
+              timestamp:
+                type: string
+
+    put:
+      operationId: items.update
+      tags:
+        - Items
+      summary: initiates co2sim with named flowsheet
+      description: initiates flowsheet and update item_ in the items list
+      parameters:
+        - name: lname
+          in: path
+          description: |
+            # This initates the flowsheet. This must be called prior to all work.
+            # Example call:
+            #### Copy the signature below into the prop form.
+            ### The unit must exit in the flow sheet.
+            ---
+
+            ```
+            lname = 1 (can be any number)
+            {
+              "fname": "ExampleTillerClosedLoop",
+              "lname": "-"
+            }
+            ```
+
+            Return:
+            dict (can be multi leveled)
+
+          type: string
+          required: True
+        - name: item_
+          in: body
+          schema:
+            type: object
+            properties:
+              fname:
+                type: string
+              lname:
+                type: string
+      responses:
+        200:
+          description: Successfully initated simulation item_ in items list
+
+    delete:
+      operationId: items.delete
+      tags:
+        - Items
+      summary: Delete a item_ from the items list
+      description: Delete a item_
+      parameters:
+        - name: lname
+          in: path
+          type: string
+          required: True
+      responses:
+        200:
+          description: Successfully deleted a item_ from items list
+
+  /results/{prop}:
+    get:
+      operationId: items.get_pipe_prop
+      tags:
+        - Items
+      summary: Send and return a general json struct to the api
+      description: Api unpacks the struct
+      parameters:
+        - name: prop
+          in: path
+          description: |
+            # Example call:
+            #### Copy the signature below into the prop form.
+            ### The unit must exit in the flow sheet.
+            ---
+
+            ```
+            {
+              "pipe": "P01",
+              "prop": "temp",
+            }
+            ```
+
+            Return:
+            dict (can be multi leveled)
+
+            Reference flowsheet:
+            ![Swagger logo](https://raw.githubusercontent.com/swagger-api/swagger-ui/master/dist/favicon-32x32.png)
+
+
+          type: string
+          required: True
+      responses:
+        200:
+          description: Successfully returned values from struct
+          schema:
+            properties:
+              pipe:
+                type: string
+              prop:
+                type: string
+              timestamp:
+                type: string
+
+  /unit/{prop}:
+    get:
+      operationId: items.get_unit_prop
+      tags:
+        - Items
+      summary: Send and return a general json struct to the api
+      description: Api unpacks the struct
+      parameters:
+        - name: prop
+          in: path
+          description: |
+            # Example call:
+            #### Copy the signature below into the prop form.
+            ### The pipe must exit in the flow sheet.
+            ## available properties are found when getting the full unit dict for the unit-> use method unit_d
+            ---
+
+            ```
+            {
+              "pipe": "Absorber",
+              "prop": "height",
+            }
+            ```
+
+            Return:
+            dict (can be multi leveled)
+
+            Reference flowsheet:
+            ![Swagger logo](https://raw.githubusercontent.com/swagger-api/swagger-ui/master/dist/favicon-32x32.png)
+
+
+          type: string
+          required: True
+      responses:
+        200:
+          description: Successfully returned values from struct
+          schema:
+            properties:
+              pipe:
+                type: string
+              prop:
+                type: string
+
+  /unit_d/{prop}:
+    get:
+      operationId: items.get_unit_dict
+      tags:
+        - Items
+      summary: Send and return a general json struct to the api
+      description: Api unpacks the struct
+      parameters:
+        - name: prop
+          in: path
+          description: |
+            # Example call:
+            #### Copy the signature below into the prop form.
+            ### The unit must exit in the flow sheet.
+            ---
+
+            ```
+            {
+              "pipe": "Absorber"
+            }
+            ```
+
+            Return:
+            dict (can be multi leveled)
+
+            Reference flowsheet:
+            ![Swagger logo](https://raw.githubusercontent.com/swagger-api/swagger-ui/master/dist/favicon-32x32.png)
+
+          type: string
+          required: True
+      responses:
+        200:
+          description: input must be available units or pipes
+          schema:
+            properties:
+              pipe:
+                type: string
+
+  /pipe_d/{prop}:
+    get:
+      operationId: items.get_pipe_dict
+      tags:
+        - Items
+      summary: Send and return a general json struct to the api
+      description: Api unpacks the struct
+      parameters:
+        - name: prop
+          in: path
+          description: |
+            # Example call:
+            #### Copy the signature below into the prop form.
+            ### The Pipe must exit in the flow sheet.
+            ---
+
+            ```
+            {
+              "pipe": "P02"
+            }
+            ```
+
+            Return:
+            dict (can be multi leveled)
+
+            Reference flowsheet:
+            ![Swagger logo](https://raw.githubusercontent.com/swagger-api/swagger-ui/master/dist/favicon-32x32.png)
+
+
+          type: string
+          required: True
+      responses:
+        200:
+          description: input must be available units or pipes
+          schema:
+            properties:
+              pipe:
+                type: string
+
+  /set/{prop}:
+    post:
+      operationId: items.set_pipe_prop
+      tags:
+        - Items
+      summary: set and return a general json struct to the api
+      description: Api to set to simulator
+      parameters:
+        - name: prop
+          in: path
+          description: |
+            # Example call:
+            #### Copy the signature below into the prop form.
+            ### The pipe must exit in the flow sheet.
+            ---
+
+            ```
+            {
+              "pipe": "P01",
+              "prop": "temp",
+              "value": "100.5"
+            }
+            ```
+
+            Return:
+            dict (can be multi leveled)
+
+            Reference flowsheet:
+            ![Swagger logo](https://raw.githubusercontent.com/swagger-api/swagger-ui/master/dist/favicon-32x32.png)
+
+          type: string
+          required: True
+      responses:
+        200:
+          description: Successfully set values to simulator
+          schema:
+            properties:
+              pipe:
+                type: string
+              prop:
+                type: string
+              value:
+                  type: string
+
+  /setunit/{prop}:
+    post:
+      operationId: items.set_unit_prop
+      tags:
+        - Items
+      summary: set and return a general json struct to the api
+      description: Api to set to simulator
+      parameters:
+        - name: prop
+          in: path
+          description: |
+            # Example call:
+            #### Copy the signature below into the prop form.
+            ### The unit must exit in the flow sheet.
+            ---
+
+            ```
+            {
+              "pipe": "Absosrber",
+              "prop": "height",
+              "value": "15.5"
+            }
+            ```
+
+            Return:
+            dict (can be multi leveled)
+
+            Reference flowsheet:
+            ![Swagger logo](https://raw.githubusercontent.com/swagger-api/swagger-ui/master/dist/favicon-32x32.png)
+
+
+          type: string
+          required: True
+      responses:
+        200:
+          description: Successfully set values to simulator
+          schema:
+            properties:
+              pipe:
+                type: string
+              prop:
+                type: string
+              value:
+                  type: string
+
+  /setpipecomponents/{prop}:
+    post:
+      operationId: items.set_pipe_components
+      tags:
+        - Items
+      summary: set and return a general json struct to the api
+      description: Api to set to simulator
+      parameters:
+        - name: prop
+          in: path
+          description: |
+            # Example call:
+            #### Copy the signature below into the prop form.
+            ### The unit must exit in the flow sheet.
+            ---
+
+            ```
+            {
+              "pipe": "Absorber"
+            }
+            ```
+
+            Return:
+            dict (can be multi leveled)
+
+            Reference flowsheet:
+            ![Swagger logo](https://raw.githubusercontent.com/swagger-api/swagger-ui/master/dist/favicon-32x32.png)
+
+
+          type: string
+          required: True
+      responses:
+        200:
+          description: Successfully set values to simulator
+          schema:
+            properties:
+              pipe:
+                type: string
+              value:
+                  type: string
