@@ -11,11 +11,10 @@ Options of running co2sim as a service externally by using set restful-API signa
 import matlab.engine
 from definitions import ROOT_DIR
 
-CURRENT_DIR = ROOT_DIR + '\\py2matlabAPI'  # path to store system generated conf files
+CURRENT_DIR = ROOT_DIR + "\\py2matlabAPI"  # path to store system generated conf files
 
 
 class ApiMatlab(object):
-
     def __init__(self):
         self.data = []
         self.flowsheetname = []
@@ -30,15 +29,18 @@ class ApiMatlab(object):
         eng.addpath(CURRENT_DIR, nargout=0)
 
         eng.pyco2sim(nargout=0)
-        st = 'simnet = {}'.format(flowsheetname)
+        st = "simnet = {}".format(flowsheetname)
         eng.eval(st, nargout=0)
-        st = 'simnet.PrintStreams'
+        st = "simnet.PrintStreams"
         eng.eval(st, nargout=0)
 
         # check if matlab class-hierarchy simnet is built
-        istrue = isinstance((eng.workspace['simnet']), object)
+        istrue = isinstance((eng.workspace["simnet"]), object)
         if istrue:
-            print('set_pipeup connection and loaded flowsheeet---Done!', type(eng.workspace['simnet']))
+            print(
+                "set_pipeup connection and loaded flowsheeet---Done!",
+                type(eng.workspace["simnet"]),
+            )
             self.eng = eng
 
     def get_pipe(self, pipe, prop):
@@ -51,7 +53,7 @@ class ApiMatlab(object):
         # create signature
         st = """var = simnet.FindPipe("{}").Struct.{};""".format(pipe, prop)
         eng.eval(st, nargout=0)
-        var = eng.workspace['var']
+        var = eng.workspace["var"]
 
         print("\n")
         print("var:__", var)
@@ -67,7 +69,7 @@ class ApiMatlab(object):
         # create signature
         st = """var = simnet.FindUnit("{}").Struct.{};""".format(unit, prop)
         eng.eval(st, nargout=0)
-        var = eng.workspace['var']
+        var = eng.workspace["var"]
 
         print("\n")
         print("var:__", var)
@@ -76,17 +78,19 @@ class ApiMatlab(object):
 
     def set_pipe(self, pipe, prop, value):
         eng = self.eng
-        st = """simnet.FindPipe("{}").Stream.FindParameter("{}").ConvValue = {};""".format(pipe, prop, value)
+        st = """simnet.FindPipe("{}").Stream.FindParameter("{}").ConvValue = {};""".format(
+            pipe, prop, value
+        )
         eng.eval(st, nargout=0)
 
         # check if it was properly set_pipe to hierarchy
-        #var = self.get_pipe(pipe, prop)
-        #diff = var - float(value)
+        # var = self.get_pipe(pipe, prop)
+        # diff = var - float(value)
         print("\n")
         print("var:__", value)
-        print('set_pipe---Done!')
+        print("set_pipe---Done!")
 
-        #if diff == 0:
+        # if diff == 0:
         return value
 
     def set_pipe_components(self, pipe, molar_vec):
@@ -94,12 +98,14 @@ class ApiMatlab(object):
         # check number of components in flowsheet
         st = """var = simnet.FindPipe("{}").Struct.ncomp;""".format(pipe)
         eng.eval(st, nargout=0)
-        ncomp = int(eng.workspace['var'])
+        ncomp = int(eng.workspace["var"])
         if ncomp != len(molar_vec):
             print("error!")
 
         for index, item in enumerate(molar_vec):
-            st = """simnet.FindPipe("{}").Struct.molfrac({}) = {};""".format(pipe, index + 1, molar_vec[index])
+            st = """simnet.FindPipe("{}").Struct.molfrac({}) = {};""".format(
+                pipe, index + 1, molar_vec[index]
+            )
             eng.eval(st, nargout=0)
         st = """simnet.FindPipe("{}").UpdateFromStruct();""".format(pipe)
         eng.eval(st, nargout=0)
@@ -118,17 +124,19 @@ class ApiMatlab(object):
 
     def set_unit(self, unit, prop, value):
         eng = self.eng
-        st = """simnet.FindUnit("{}").FindParameter("{}").ConvValue = {};""".format(unit, prop, value)
+        st = """simnet.FindUnit("{}").FindParameter("{}").ConvValue = {};""".format(
+            unit, prop, value
+        )
         eng.eval(st, nargout=0)
 
         # check if it Swas properly set_pipe to hierarchy
-        #var = self.get_unit(unit, prop)
-        #diff = var - float(value)
+        # var = self.get_unit(unit, prop)
+        # diff = var - float(value)
         print("\n")
         print("var:__", value)
-        print('set_pipe---Done!')
+        print("set_pipe---Done!")
 
-        #if diff == 0:
+        # if diff == 0:
         return value
 
     def get_pipe_struct(self, pipe):
@@ -138,7 +146,7 @@ class ApiMatlab(object):
         # return the full stream structure
         struct = """struct = simnet.FindPipe("{}").Struct;""".format(pipe)
         eng.eval(struct, nargout=0)
-        struct = eng.workspace['struct']  # eng.eval("var")
+        struct = eng.workspace["struct"]  # eng.eval("var")
 
         print("\n")
         print("struct:__", struct)
@@ -152,7 +160,7 @@ class ApiMatlab(object):
         # return the full stream structure
         struct = """struct = simnet.FindUnit("{}").Struct;""".format(unit)
         eng.eval(struct, nargout=0)
-        struct = eng.workspace['struct']  # eng.eval("var")
+        struct = eng.workspace["struct"]  # eng.eval("var")
 
         print("\n")
         print("struct:__", struct)
@@ -166,7 +174,7 @@ class ApiMatlab(object):
         # return the full stream structure
         struct = """struct = getSummaryData(simnet);"""
         eng.eval(struct, nargout=0)
-        struct = eng.workspace['struct']
+        struct = eng.workspace["struct"]
 
         print("\n")
         print("struct:__", struct)
@@ -177,7 +185,7 @@ class ApiMatlab(object):
         # run the network solver
         eng = self.eng
         print("Running simulation")
-        eng.eval('simnet.Solve;', nargout=0)
+        eng.eval("simnet.Solve;", nargout=0)
 
 
 # helperfile to convert matlab structures to python lists before serlization
@@ -207,42 +215,42 @@ def obj_to_dict(obj):
 
 def main():
     obj = ApiMatlab()
-    obj.connect('ExampleAbsorber')
+    obj.connect("ExampleAbsorber")
 
     # get outlet temp absorber
-    pipe = 'P02'
-    prop = 'temp'
+    pipe = "P02"
+    prop = "temp"
     var1 = obj.get_pipe(pipe, prop)
 
     # solve flowsheet
     # obj.solve()
 
-    pipe = 'P01'
-    prop = 'temp'
+    pipe = "P01"
+    prop = "temp"
     value = 320
     obj.set_pipe(pipe, prop, value)
-    unit = 'Absorber'
-    prop = 'length'
+    unit = "Absorber"
+    prop = "length"
     value = 15.0
     obj.set_unit(unit, prop, value)
     value_chk = obj.get_unit(unit, prop)
 
-    assert (value == value_chk)
+    assert value == value_chk
     # solve flowsheet
     # obj.solve()
 
     # get outlet temp absorber
-    pipe = 'P02'
-    prop = 'temp'
+    pipe = "P02"
+    prop = "temp"
     var2 = obj.get_pipe(pipe, prop)
 
     diff = var2 - var1
-    pipe_dict = obj.get_pipe_struct('P02')
-    unit_dict = obj.get_unit_struct('Absorber')
+    pipe_dict = obj.get_pipe_struct("P02")
+    unit_dict = obj.get_unit_struct("Absorber")
 
-    molar_vec = (.5, .5, .5, .5, .5)
-    obj.set_pipe_components('P01', molar_vec)
+    molar_vec = (0.5, 0.5, 0.5, 0.5, 0.5)
+    obj.set_pipe_components("P01", molar_vec)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

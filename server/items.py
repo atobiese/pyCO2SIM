@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 This is the ITEM module and supports all the ReST actions for the
 ITEM collection (works with the swagger yaml file)
@@ -10,7 +12,8 @@ from flask import make_response, abort
 # co2sim
 from py2matlabAPI.API_pyco2sim import ApiMatlab
 
-class Model():
+
+class Model:
     pass
 
 
@@ -27,11 +30,7 @@ def get_timestamp():
 
 # Data to serve with API
 ITEM = {
-    "-": {
-        "fname": "-",
-        "lname": "-",
-        "timestamp": "-",
-    },
+    "-": {"fname": "-", "lname": "-", "timestamp": "-",},
 }
 
 
@@ -41,13 +40,12 @@ def get_pipe_prop(prop):
     """
 
     dict_obj = json.loads(prop)
-    pipe = dict_obj['pipe']
-    property = dict_obj['prop']
+    pipe = dict_obj["pipe"]
+    property = dict_obj["prop"]
 
     if model.connected is False:
         abort(
-            406,
-            "api is not connected with server, load casefile first",
+            406, "api is not connected with server, load casefile first",
         )
 
     else:
@@ -76,13 +74,12 @@ def get_unit_prop(prop):
     """
 
     dict_obj = json.loads(prop)
-    unit = dict_obj['pipe']
-    property = dict_obj['prop']
+    unit = dict_obj["pipe"]
+    property = dict_obj["prop"]
 
     if model.connected is False:
         abort(
-            406,
-            "api is not connected with server, load casefile first",
+            406, "api is not connected with server, load casefile first",
         )
 
     else:
@@ -109,15 +106,14 @@ def set_pipe_prop(prop):
     """
 
     dict_obj = json.loads(prop)
-    pipe = dict_obj['pipe']
-    property = dict_obj['prop']
-    value = dict_obj['value']
+    pipe = dict_obj["pipe"]
+    property = dict_obj["prop"]
+    value = dict_obj["value"]
 
     if model.connected is False:
         abort == True
         abort(
-            406,
-            "api is not connected with server, connect first",
+            406, "api is not connected with server, connect first",
         )
 
     else:
@@ -140,22 +136,22 @@ def set_pipe_prop(prop):
 
 def set_pipe_components(prop):
     import ast
+
     """
     {"pipe":"P02","prop":"press"}
     """
 
     dict_obj = json.loads(prop)
-    pipe = dict_obj['pipe']
+    pipe = dict_obj["pipe"]
     # property = dict_obj['prop']
-    value = dict_obj['value']
+    value = dict_obj["value"]
     # convert string to list
     value_list = ast.literal_eval(value)
 
     if model.connected is False:
         abort == True
         abort(
-            406,
-            "api is not connected with server, connect first",
+            406, "api is not connected with server, connect first",
         )
 
     else:
@@ -167,7 +163,7 @@ def set_pipe_components(prop):
         new_name = "simulation:" + "_" + str(model.count)
         ITEM[new_name] = {
             "pipe": pipe,
-            "property": 'Not applicable',
+            "property": "Not applicable",
             "value": value_list,
         }
 
@@ -182,15 +178,14 @@ def set_unit_prop(prop):
     """
 
     dict_obj = json.loads(prop)
-    pipe = dict_obj['pipe']
-    property = dict_obj['prop']
-    value = dict_obj['value']
+    pipe = dict_obj["pipe"]
+    property = dict_obj["prop"]
+    value = dict_obj["value"]
 
     if model.connected is False:
         abort == True
         abort(
-            406,
-            "api is not connected with server, connect first",
+            406, "api is not connected with server, connect first",
         )
 
     else:
@@ -217,13 +212,12 @@ def get_unit_dict(prop):
     """
 
     dict_obj = json.loads(prop)
-    unit = dict_obj['pipe']
+    unit = dict_obj["pipe"]
     # property = dict_obj['prop']
 
     if model.connected is False:
         abort(
-            406,
-            "api is not connected with server, load casefile first",
+            406, "api is not connected with server, load casefile first",
         )
 
     else:
@@ -243,19 +237,19 @@ def get_unit_dict(prop):
 
     return item_
 
+
 def get_summary_dict(prop):
     """
     {"pipe":"P02","prop":"press"}
     """
 
     dict_obj = json.loads(prop)
-    unit = dict_obj['pipe']
+    unit = dict_obj["pipe"]
     # property = dict_obj['prop']
 
     if model.connected is False:
         abort(
-            406,
-            "api is not connected with server, load casefile first",
+            406, "api is not connected with server, load casefile first",
         )
 
     else:
@@ -275,14 +269,14 @@ def get_summary_dict(prop):
 
     return item_
 
+
 def get_pipe_dict(prop):
     dict_obj = json.loads(prop)
-    unit = dict_obj['pipe']
+    unit = dict_obj["pipe"]
 
     if model.connected is False:
         abort(
-            406,
-            "api is not connected with server, load casefile first",
+            406, "api is not connected with server, load casefile first",
         )
 
     else:
@@ -313,9 +307,7 @@ def read_one(lname):
         item_ = ITEM.get(lname)
 
     else:
-        abort(
-            404, "item_ with last name {lname} not found".format(lname=lname)
-        )
+        abort(404, "item_ with last name {lname} not found".format(lname=lname))
 
     return item_
 
@@ -336,13 +328,13 @@ def create(item_):
 
         ITEM[new_name] = {
             "lname": new_name,
-            "fname": new_in['fname'],
+            "fname": new_in["fname"],
             "timestamp": get_timestamp(),
         }
     except:
         ITEM[new_name] = {
             "lname": new_name,
-            "fname": new_in['property'],
+            "fname": new_in["property"],
             "timestamp": get_timestamp(),
         }
 
@@ -356,7 +348,7 @@ def update(lname, item_):
     if flowsheetname:
         flowsheetname = flowsheetname
     else:
-        flowsheetname = 'ExampleAbsorber'
+        flowsheetname = "ExampleAbsorber"
 
     if flowsheetname != model.instance.flowsheetname:
         model.instance.connect(flowsheetname)
@@ -372,8 +364,7 @@ def update(lname, item_):
 
     else:
         abort(
-            406,
-            "simulator already initaited ",
+            406, "simulator already initaited ",
         )
 
 
@@ -385,12 +376,8 @@ def delete(lname):
     # Does the item_ to delete exist?
     if lname in ITEM:
         del ITEM[lname]
-        return make_response(
-            "{lname} successfully deleted".format(lname=lname), 200
-        )
+        return make_response("{lname} successfully deleted".format(lname=lname), 200)
 
     # Otherwise, item_ to delete not found
     else:
-        abort(
-            404, "item_ with last name {lname} not found".format(lname=lname)
-        )
+        abort(404, "item_ with last name {lname} not found".format(lname=lname))

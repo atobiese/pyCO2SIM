@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Main module of the server file
 """
@@ -5,7 +7,7 @@ Main module of the server file
 from flask import render_template
 import connexion
 
-HOST = '127.0.0.1'
+HOST = "127.0.0.1"
 PORT = 5001
 
 app = connexion.App(__name__, specification_dir="../")
@@ -19,4 +21,4 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(host = HOST, port = PORT, debug=True)
+    app.run(host=HOST, port=PORT, debug=True)

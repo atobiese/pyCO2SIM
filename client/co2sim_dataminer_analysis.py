@@ -15,7 +15,6 @@ _LOG.setLevel(logging.DEBUG)
 
 
 class Results(object):
-
     def __init__(self, abs_filename):
 
         self.abs_filename = abs_filename
@@ -45,73 +44,81 @@ class Results(object):
 
         # query the data
         db_results = s.df.loc[
-            (s.df['capture_rate'] >= res_min) &
-            (s.df['capture_rate'] <= res_max) &
-            (s.df['absorber_height'] == height) &
-            (s.df['fluegas_CO2'] == mol_conc_co2)]
+            (s.df["capture_rate"] >= res_min)
+            & (s.df["capture_rate"] <= res_max)
+            & (s.df["absorber_height"] == height)
+            & (s.df["fluegas_CO2"] == mol_conc_co2)
+        ]
 
         nr_points = len(db_results)
-        print(f'nr points found {nr_points}')
+        print(f"nr points found {nr_points}")
 
         if nr_points is 0:
-            print(f'no points were found: {nr_points}, exiting')
-            row_opt=-1
+            print(f"no points were found: {nr_points}, exiting")
+            row_opt = -1
             lg_ = -1
             return row_opt, lg_, nr_points
 
-
-        liqflow_m = db_results['solvent_circ_rate'] * mwal
+        liqflow_m = db_results["solvent_circ_rate"] * mwal
         s.lg_ratio = gasflow_m / liqflow_m
 
         # best case wrt SRD
-        idxmin = db_results['srd'].idxmin()
+        idxmin = db_results["srd"].idxmin()
         row_opt = s.df.iloc[idxmin]
-        lg_ = row_opt['solvent_circ_rate'] * mwal / gasflow_m
+        lg_ = row_opt["solvent_circ_rate"] * mwal / gasflow_m
 
         print(row_opt)
-        print(f' lg_ratio {lg_}')
-        print(f'nr points found {nr_points}')
+        print(f" lg_ratio {lg_}")
+        print(f"nr points found {nr_points}")
 
         # plot
         if plot:
             dx = [0] * 4
             dy = [0] * 4
-            text = [''] * 4
-            xlabel = [''] * 4
-            ylabel = [''] * 4
+            text = [""] * 4
+            xlabel = [""] * 4
+            ylabel = [""] * 4
 
-            propx = ['srd']
-            propy = 'solvent_circ_rate', 'lean_loading', 'richLoading', 'lg_ratio'
+            propx = ["srd"]
+            propy = "solvent_circ_rate", "lean_loading", "richLoading", "lg_ratio"
 
-            for k in range(0,3):
+            for k in range(0, 3):
 
                 dx[k] = db_results[propx]
                 dy[k] = db_results[propy[k]]
-                text[k] = ''  # name
+                text[k] = ""  # name
                 xlabel[k] = propy[k]
                 ylabel[k] = propx
 
-            propx = 'srd'
-            propy = 'lg_ratio'
-            name = 'lg_ratio rate vs duty'
+            propx = "srd"
+            propy = "lg_ratio"
+            name = "lg_ratio rate vs duty"
             dx[3] = db_results[propx]
             dy[3] = s.lg_ratio
-            text[3] = ''  # name
+            text[3] = ""  # name
             xlabel[3] = propy
             ylabel[3] = propx
 
-
             fig, ax = plt.subplots(nrows=2, ncols=2)
             # plt.rcParams.update({'font.size': 10})
-            fig.suptitle(f'capture: {restrict}% nr_points: {nr_points}, between {res_min}-{res_max}% \n '
-                         f'gas_co2_in: {mol_conc_co2 * 100.}%, height: {height}'
-                         f''' Min(srd)={row_opt['srd']:.2f}''', fontsize=8)
+            fig.suptitle(
+                f"capture: {restrict}% nr_points: {nr_points}, between {res_min}-{res_max}% \n "
+                f"gas_co2_in: {mol_conc_co2 * 100.}%, height: {height}"
+                f""" Min(srd)={row_opt['srd']:.2f}""",
+                fontsize=8,
+            )
             k = 0
             for i, row in enumerate(ax):
                 for j, col in enumerate(row):
-                    col.plot(dy[k], dx[k], marker=".", markerfacecolor='red', color='blue', linewidth=1)
-                    col.set(xlabel=xlabel[k], ylabel=ylabel[k],
-                            title=text[k])
+                    col.plot(
+                        dy[k],
+                        dx[k],
+                        marker=".",
+                        markerfacecolor="red",
+                        color="blue",
+                        linewidth=1,
+                    )
+                    col.set(xlabel=xlabel[k], ylabel=ylabel[k], title=text[k])
                     col.grid()
                     k += 1
 
@@ -121,23 +128,25 @@ class Results(object):
 
 
 def main():
-    filename = 'matrix_90_20_temp_in_48C_2.csv'
-    abs_filename = TEMP_DIR + '/' + filename
+    filename = "matrix_90_20_temp_in_48C_2.csv"
+    abs_filename = TEMP_DIR + "/" + filename
     # pre-process
     o = Results(abs_filename)
 
-    #row_opt, lg_, nr_points = o.get_ucurve_min(restrict=50.0, height=20, mol_conc_co2=0.06, plot=True)
+    # row_opt, lg_, nr_points = o.get_ucurve_min(restrict=50.0, height=20, mol_conc_co2=0.06, plot=True)
 
     # NB, data below must be matched to the simulated results, wrt chosen absorber height and inlet concentration
     captures = np.linspace(20, 90, 8)
-    heights = [15., 20.]
+    heights = [15.0, 20.0]
     mol_conc_co2 = 0.06
 
     for height in heights:
         for caps in captures:
-            row_opt, lg_, nr_points = o.get_ucurve_min(restrict=caps, height=height, mol_conc_co2=mol_conc_co2, plot=True)
+            row_opt, lg_, nr_points = o.get_ucurve_min(
+                restrict=caps, height=height, mol_conc_co2=mol_conc_co2, plot=True
+            )
         plt.show()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

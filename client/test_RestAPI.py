@@ -12,11 +12,12 @@ from client.RestAPI import RESTApi
 from py2matlabAPI.API_pyco2sim import ApiMatlab
 from client.co2sim_dataminer import get_summary_data
 
+
 def test(case):
     # case = "tcp_api"
     # case = "py2mat_api"
 
-    #note that the methods are identical, but different classes (internal or external)
+    # note that the methods are identical, but different classes (internal or external)
 
     if case == "tcp_api":
         print("running over web")
@@ -24,7 +25,7 @@ def test(case):
         # url = "http://178.164.32.34:5001/"
         url = "http://127.0.0.1:5001/"
         # # flowsheet = 'ExampleAbsorber'
-        flowsheet = 'ExampleTillerClosedLoop'
+        flowsheet = "ExampleTillerClosedLoop"
         # # setup class
         obj = RESTApi(url, flowsheet)
         # # connect to simulator
@@ -34,16 +35,15 @@ def test(case):
         print("running locally")
         # opening connection to local co2sim methods
         obj = ApiMatlab()
-        obj.connect('ExampleTillerClosedLoop')
+        obj.connect("ExampleTillerClosedLoop")
 
     # solve flowsheet
     obj.solve()
 
-
     o = get_summary_data(obj, bypass=False)
-    unit_name = 'Reboiler'
-    reboilerDuty_prev = obj.get_unit(unit_name, 'flashQ')
-    var = obj.set_unit(unit_name, 'flashQ', reboilerDuty_prev*.95)
+    unit_name = "Reboiler"
+    reboilerDuty_prev = obj.get_unit(unit_name, "flashQ")
+    var = obj.set_unit(unit_name, "flashQ", reboilerDuty_prev * 0.95)
     obj.solve()
     get_summary_data(obj, bypass=False)
 
@@ -58,7 +58,7 @@ def test(case):
     # get_summary_data(obj, bypass=False)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # main file
     case = "tcp_api"
     # case = "py2mat_api"

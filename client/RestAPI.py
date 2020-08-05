@@ -23,7 +23,6 @@ logging.debug("Begin")
 
 
 class RESTApi(object):
-
     def __init__(self, url, flowsheetname):
 
         self.url = url
@@ -34,9 +33,9 @@ class RESTApi(object):
 
     def connect(self):
         # initiates and loads flowshet
-        url_spec = self.url + 'api/items/str'
+        url_spec = self.url + "api/items/str"
         payload = """{"prop": """ + '"' + self.flowsheetname + '"' + ""","value":"-"}"""
-        headers = {'content-type': 'application/json'}
+        headers = {"content-type": "application/json"}
         res = requests.put(url_spec, data=payload, headers=headers)
 
         # check if matlab class-hierarchy simnet is built
@@ -48,22 +47,33 @@ class RESTApi(object):
         # run the network solver
         _LOG.info("Running simulation")
         # runs a simulation
-        url_spec = self.url + 'api/items'
-        payload = """{"fname": """ + '"' + self.flowsheetname + '"' + ""","lname":"-"}"""
-        headers = {'content-type': 'application/json'}
+        url_spec = self.url + "api/items"
+        payload = (
+            """{"fname": """ + '"' + self.flowsheetname + '"' + ""","lname":"-"}"""
+        )
+        headers = {"content-type": "application/json"}
         res = requests.post(url_spec, data=payload, headers=headers)
 
         # check if matlab class-hierarchy simnet is built
         dict_obj = json.loads(res.content.decode())
-        _LOG.info(dict_obj['lname'])
+        _LOG.info(dict_obj["lname"])
         return dict_obj
 
     def get_pipe(self, pipe, prop):
 
-        url_spec = self.url + 'api/results/'
-        values_ = """{"pipe": """ + '"' + pipe \
-                  + '"' + ""","prop": """ + '"' + prop \
-                  + '"' + "}"""
+        url_spec = self.url + "api/results/"
+        values_ = (
+            """{"pipe": """
+            + '"'
+            + pipe
+            + '"'
+            + ""","prop": """
+            + '"'
+            + prop
+            + '"'
+            + "}"
+            ""
+        )
         values = urllib.parse.quote(str(values_))
         # hack to raplace from double to single quotation mark (fixme fat)
         d1 = values.replace("%27", "%22")
@@ -71,8 +81,8 @@ class RESTApi(object):
         res = requests.get(url_query)
         try:
             dict_obj = json.loads(res.content.decode())
-            property = dict_obj['lname']  # property
-            value = dict_obj['fname']  # value'
+            property = dict_obj["lname"]  # property
+            value = dict_obj["fname"]  # value'
         except:
             dict_obj = -1
             property = -1
@@ -84,10 +94,19 @@ class RESTApi(object):
 
     def get_unit(self, unit, prop):
 
-        url_spec = self.url + 'api/unit/'
-        values_ = """{"pipe": """ + '"' + unit \
-                  + '"' + ""","prop": """ + '"' + prop \
-                  + '"' + "}"""
+        url_spec = self.url + "api/unit/"
+        values_ = (
+            """{"pipe": """
+            + '"'
+            + unit
+            + '"'
+            + ""","prop": """
+            + '"'
+            + prop
+            + '"'
+            + "}"
+            ""
+        )
         values = urllib.parse.quote(str(values_))
         # hack to raplace from double to single quotation mark (fixme fat)
         d1 = values.replace("%27", "%22")
@@ -95,8 +114,8 @@ class RESTApi(object):
         res = requests.get(url_query)
         try:
             dict_obj = json.loads(res.content.decode())
-            property = dict_obj['lname']  # property
-            value = dict_obj['fname']  # value'
+            property = dict_obj["lname"]  # property
+            value = dict_obj["fname"]  # value'
         except:
             dict_obj = -1
             property = -1
@@ -108,11 +127,23 @@ class RESTApi(object):
         return value  # , property, dict_obj
 
     def set_pipe(self, pipe, prop, value):
-        url_spec = self.url + 'api/set/'
-        values_ = """{"pipe": """ + '"' + pipe + '"' \
-                  + ""","prop": """ + '"' + prop + '"' \
-                  + ""","value": """ + '"' + str(value) \
-                  + '"' + "}"""
+        url_spec = self.url + "api/set/"
+        values_ = (
+            """{"pipe": """
+            + '"'
+            + pipe
+            + '"'
+            + ""","prop": """
+            + '"'
+            + prop
+            + '"'
+            + ""","value": """
+            + '"'
+            + str(value)
+            + '"'
+            + "}"
+            ""
+        )
         values = urllib.parse.quote(str(values_))
         # hack to raplace from double to single quotation mark (fixme fat)
         d1 = values.replace("%27", "%22")
@@ -128,11 +159,23 @@ class RESTApi(object):
         return value  # , dict_obj
 
     def set_unit(self, unit, prop, value):
-        url_spec = self.url + 'api/setunit/'
-        values_ = """{"pipe": """ + '"' + unit + '"' \
-                  + ""","prop": """ + '"' + prop + '"' \
-                  + ""","value": """ + '"' + str(value) \
-                  + '"' + "}"""
+        url_spec = self.url + "api/setunit/"
+        values_ = (
+            """{"pipe": """
+            + '"'
+            + unit
+            + '"'
+            + ""","prop": """
+            + '"'
+            + prop
+            + '"'
+            + ""","value": """
+            + '"'
+            + str(value)
+            + '"'
+            + "}"
+            ""
+        )
         values = urllib.parse.quote(str(values_))
         # hack to raplace from double to single quotation mark (fixme fat)
         d1 = values.replace("%27", "%22")
@@ -148,10 +191,19 @@ class RESTApi(object):
         return value  # , dict_obj
 
     def set_pipe_components(self, pipe, value):
-        url_spec = self.url + 'api/setpipecomponents/'
-        values_ = """{"pipe": """ + '"' + pipe + '"' \
-                  + ""","value": """ + '"' + str(value) \
-                  + '"' + "}"""
+        url_spec = self.url + "api/setpipecomponents/"
+        values_ = (
+            """{"pipe": """
+            + '"'
+            + pipe
+            + '"'
+            + ""","value": """
+            + '"'
+            + str(value)
+            + '"'
+            + "}"
+            ""
+        )
         values = urllib.parse.quote(str(values_))
         # hack to raplace from double to single quotation mark (fixme fat)
         d1 = values.replace("%27", "%22")
@@ -168,9 +220,8 @@ class RESTApi(object):
 
     def get_pipe_struct(self, pipe):
 
-        url_spec = self.url + 'api/pipe_d/'
-        values_ = """{"pipe": """ + '"' + pipe \
-                  + '"' + "}"""
+        url_spec = self.url + "api/pipe_d/"
+        values_ = """{"pipe": """ + '"' + pipe + '"' + "}" ""
         values = urllib.parse.quote(str(values_))
         # hack to raplace from double to single quotation mark (fixme fat)
         d1 = values.replace("%27", "%22")
@@ -178,8 +229,8 @@ class RESTApi(object):
         res = requests.get(url_query)
         try:
             dict_obj = json.loads(res.content.decode())
-            property = dict_obj['lname']  # property
-            value = dict_obj['fname']  # value'
+            property = dict_obj["lname"]  # property
+            value = dict_obj["fname"]  # value'
         except:
             dict_obj = -1
             property = -1
@@ -190,10 +241,9 @@ class RESTApi(object):
         return value
 
     def get_summary_struct(self):
-        pipe = 'dummy'
-        url_spec = self.url + 'api/summary_d/'
-        values_ = """{"pipe": """ + '"' + pipe \
-                  + '"' + "}"""
+        pipe = "dummy"
+        url_spec = self.url + "api/summary_d/"
+        values_ = """{"pipe": """ + '"' + pipe + '"' + "}" ""
         values = urllib.parse.quote(str(values_))
         # hack to raplace from double to single quotation mark (fixme fat)
         d1 = values.replace("%27", "%22")
@@ -201,8 +251,8 @@ class RESTApi(object):
         res = requests.get(url_query)
         try:
             dict_obj = json.loads(res.content.decode())
-            property = dict_obj['lname']  # property
-            value = dict_obj['fname']  # value'
+            property = dict_obj["lname"]  # property
+            value = dict_obj["fname"]  # value'
         except:
             dict_obj = -1
             property = -1
@@ -214,9 +264,8 @@ class RESTApi(object):
 
     def get_unit_struct(self, pipe):
 
-        url_spec = self.url + 'api/unit_d/'
-        values_ = """{"pipe": """ + '"' + pipe \
-                  + '"' + "}"""
+        url_spec = self.url + "api/unit_d/"
+        values_ = """{"pipe": """ + '"' + pipe + '"' + "}" ""
         values = urllib.parse.quote(str(values_))
         # hack to raplace from double to single quotation mark (fixme fat)
         d1 = values.replace("%27", "%22")
@@ -224,8 +273,8 @@ class RESTApi(object):
         res = requests.get(url_query)
         try:
             dict_obj = json.loads(res.content.decode())
-            property = dict_obj['lname']  # property
-            value = dict_obj['fname']  # value'
+            property = dict_obj["lname"]  # property
+            value = dict_obj["fname"]  # value'
         except:
             dict_obj = -1
             property = -1
@@ -240,8 +289,8 @@ def defaulttest():
     # test script
     # connect and load flowsheet
     url = "http://127.0.0.1:5001/"
-    flowsheet = 'ExampleAbsorber'
-    flowsheet = 'ExampleTillerClosedLoop_val_orig_astarita_ng'
+    flowsheet = "ExampleAbsorber"
+    flowsheet = "ExampleTillerClosedLoop_val_orig_astarita_ng"
 
     # setup class
     obj = RESTApi(url, flowsheet)
@@ -249,18 +298,18 @@ def defaulttest():
     obj.connect()
 
     # get outlet temp absorber
-    pipe = 'P02'
-    prop = 'temp'
+    pipe = "P02"
+    prop = "temp"
     var1 = obj.get_pipe(pipe, prop)
-    var1 = obj.get_pipe(pipe, 'press')
-    var1 = obj.get_pipe(pipe, 'flow')
+    var1 = obj.get_pipe(pipe, "press")
+    var1 = obj.get_pipe(pipe, "flow")
 
-    pipe = 'P01'
-    prop = 'temp'
+    pipe = "P01"
+    prop = "temp"
     value = 320
     obj.set_pipe(pipe, prop, value)
-    unit = 'Absorber'
-    prop = 'length'
+    unit = "Absorber"
+    prop = "length"
     value = 15.0
     var = obj.get_unit(unit, prop)
     obj.set_unit(unit, prop, value)
@@ -268,22 +317,22 @@ def defaulttest():
     value_chk = obj.get_pipe(pipe, prop)
 
     # get outlet temp absorber
-    pipe = 'P02'
-    prop = 'temp'
+    pipe = "P02"
+    prop = "temp"
     var2 = obj.get_pipe(pipe, prop)
 
-    molar_vec = (.5, .5, .5, .5, .5)
-    obj.set_pipe_components('P01', molar_vec)
-    pipe_dict = obj.get_pipe_struct('P02')
-    pipe_dict['amine']
-    #unit_dict = obj.get_unit_struct('Absorber')
-    #unit_dict['type']
+    molar_vec = (0.5, 0.5, 0.5, 0.5, 0.5)
+    obj.set_pipe_components("P01", molar_vec)
+    pipe_dict = obj.get_pipe_struct("P02")
+    pipe_dict["amine"]
+    # unit_dict = obj.get_unit_struct('Absorber')
+    # unit_dict['type']
 
     var = obj.get_unit(unit, prop)
 
     struct = obj.get_summary_struct()
-    a=1
+    a = 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     defaulttest()
