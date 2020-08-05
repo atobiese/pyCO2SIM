@@ -8,8 +8,8 @@ import connexion
 HOST = '127.0.0.1'
 PORT = 5001
 
-app = connexion.App(__name__, specification_dir="./")
-app.add_api("swagger.yml")
+app = connexion.App(__name__, specification_dir="../")
+app.add_api("server/swagger.yml")
 
 
 # create default URL route
