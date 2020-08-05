@@ -1,8 +1,10 @@
 
 ## Running simulations on a server with OpenAPI (swagger)
 
-
-### Built With
+This code uses open source packages enabling access to python or matlab methods on a server, through a rest API using the swagger framework.
+The intention is to show how one can access own simulation models by setting up methods with pre-set signatures. 
+  
+### Used languages 
 
 * [Python 3]()
 * [Matlab]()
@@ -17,7 +19,7 @@ cd pyCO2SIM
 pipenv install
 ```
 
-NB: Installing matlab engine requires installed matlab on host pc:
+NB: Installing matlab engine requires installed matlab on host pc. In the following, this has been setup on a win 10 machine beacuse the numercial libraries for CO2SIM are setup in win:
 
 How to install matlab engine in pipenv:
 1. Open shell as administrator, in cmd shell, open the virtual environment:

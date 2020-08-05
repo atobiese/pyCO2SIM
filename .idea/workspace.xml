@@ -6,16 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b2932f5d-c8eb-40aa-9a97-aed0e58089bb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/RestAPI.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/RestAPI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/co2sim_dataminer.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/co2sim_dataminer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/co2sim_dataminer_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/co2sim_dataminer_analysis.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/test_RestAPI.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/test_RestAPI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/definitions.py" beforeDir="false" afterPath="$PROJECT_DIR$/definitions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/py2matlabAPI/API_pyco2sim.py" beforeDir="false" afterPath="$PROJECT_DIR$/py2matlabAPI/API_pyco2sim.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_miner_from_root.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_miner_from_root.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/items.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/items.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unit_tests/test_co2simAPI.py" beforeDir="false" afterPath="$PROJECT_DIR$/unit_tests/test_co2simAPI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,10 +203,11 @@
     </state>
     <state width="1155" height="466" key="DebuggerActiveHint/0.0.1536.824@0.0.1536.824" timestamp="1589812985473" />
     <state width="1491" height="657" key="DebuggerActiveHint/0.0.1920.1160@0.0.1920.1160" timestamp="1596617859999" />
-    <state x="549" y="170" key="FileChooserDialogImpl" timestamp="1589375847932">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="686" y="239" key="FileChooserDialogImpl" timestamp="1596635081212">
+      <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="549" y="170" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1589375847932" />
+    <state x="686" y="239" key="FileChooserDialogImpl/0.0.1920.1160@0.0.1920.1160" timestamp="1596635081212" />
     <state x="0" y="0" key="FileDocumentManager.FileCacheConflict" timestamp="1589979808767">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
