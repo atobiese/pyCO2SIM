@@ -8,6 +8,7 @@ Options of running co2sim as a service externally by using set restful-API signa
 @atobiese
 """
 
+import matlab.engine
 from definitions import ROOT_DIR
 
 CURRENT_DIR = ROOT_DIR + '\\py2matlabAPI'  # path to store system generated conf files
@@ -23,7 +24,6 @@ class ApiMatlab(object):
 
     def connect(self, flowsheetname):
         self.flowsheetname = flowsheetname
-        import matlab.engine
         eng = matlab.engine.start_matlab()
 
         # set_pipeup matlab behind server (only needs to be done on connect(?)
@@ -80,14 +80,14 @@ class ApiMatlab(object):
         eng.eval(st, nargout=0)
 
         # check if it was properly set_pipe to hierarchy
-        var = self.get_pipe(pipe, prop)
-        diff = var - float(value)
+        #var = self.get_pipe(pipe, prop)
+        #diff = var - float(value)
         print("\n")
-        print("var:__", var)
+        print("var:__", value)
         print('set_pipe---Done!')
 
-        if diff == 0:
-            return var
+        #if diff == 0:
+        return value
 
     def set_pipe_components(self, pipe, molar_vec):
         eng = self.eng
@@ -122,14 +122,14 @@ class ApiMatlab(object):
         eng.eval(st, nargout=0)
 
         # check if it Swas properly set_pipe to hierarchy
-        var = self.get_unit(unit, prop)
-        diff = var - float(value)
+        #var = self.get_unit(unit, prop)
+        #diff = var - float(value)
         print("\n")
-        print("var:__", var)
+        print("var:__", value)
         print('set_pipe---Done!')
 
-        if diff == 0:
-            return var
+        #if diff == 0:
+        return value
 
     def get_pipe_struct(self, pipe):
         eng = self.eng
@@ -153,6 +153,20 @@ class ApiMatlab(object):
         struct = """struct = simnet.FindUnit("{}").Struct;""".format(unit)
         eng.eval(struct, nargout=0)
         struct = eng.workspace['struct']  # eng.eval("var")
+
+        print("\n")
+        print("struct:__", struct)
+        json_stuct = obj_to_dict(struct)
+        return json_stuct
+
+    def get_summary_struct(self):
+        eng = self.eng
+
+        # create signature
+        # return the full stream structure
+        struct = """struct = getSummaryData(simnet);"""
+        eng.eval(struct, nargout=0)
+        struct = eng.workspace['struct']
 
         print("\n")
         print("struct:__", struct)

@@ -459,3 +459,40 @@ paths:
                 type: string
               value:
                   type: string
+  /summary_d/{prop}:
+    get:
+      operationId: items.get_summary_dict
+      tags:
+        - Items
+      summary: Send and return a general json struct to the api
+      description: Api unpacks the struct
+      parameters:
+        - name: prop
+          in: path
+          description: |
+            # Example call:
+            #### Copy the signature below into the prop form.
+            ### The unit must exit in the flow sheet.
+            ---
+
+            ```
+            {
+              "pipe": "Absorber"
+            }
+            ```
+
+            Return:
+            dict (can be multi leveled)
+
+            Reference flowsheet:
+            ![Swagger logo](https://raw.githubusercontent.com/swagger-api/swagger-ui/master/dist/favicon-32x32.png)
+
+          type: string
+          required: True
+      responses:
+        200:
+          description: input must be available units or pipes
+          schema:
+            properties:
+              pipe:
+                type: string

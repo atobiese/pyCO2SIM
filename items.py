@@ -10,7 +10,6 @@ from flask import make_response, abort
 # co2sim
 from py2matlabAPI.API_pyco2sim import ApiMatlab
 
-
 class Model():
     pass
 
@@ -244,6 +243,37 @@ def get_unit_dict(prop):
 
     return item_
 
+def get_summary_dict(prop):
+    """
+    {"pipe":"P02","prop":"press"}
+    """
+
+    dict_obj = json.loads(prop)
+    unit = dict_obj['pipe']
+    # property = dict_obj['prop']
+
+    if model.connected is False:
+        abort(
+            406,
+            "api is not connected with server, load casefile first",
+        )
+
+    else:
+        # get outlet temp absorber
+        unit_dict = model.instance.get_summary_struct()
+
+        # hacking fixme
+        new_in = ITEM.get(list(ITEM.keys())[-1])
+        new_name = str(model.count) + "_" "simulation"
+        ITEM[new_name] = {
+            "lname": unit,
+            "fname": unit_dict,
+            "timestamp": get_timestamp(),
+        }
+
+        item_ = ITEM[new_name]  # ITEM.get(lname)
+
+    return item_
 
 def get_pipe_dict(prop):
     dict_obj = json.loads(prop)

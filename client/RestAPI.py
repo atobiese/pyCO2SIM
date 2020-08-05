@@ -7,7 +7,7 @@ Options of running co2sim as a service by using API signatures.
 The file needs to be accessible on the CLIENT-side, and creates http rest calls via a common
 set of methods.
 see the main part of this file for examples or the test_RESTAPI file.
-USAGE: from client.RestAPI import RESTApi
+USAGE: from client_old.RestAPI import RESTApi
 """
 
 import requests
@@ -56,7 +56,7 @@ class RESTApi(object):
         # check if matlab class-hierarchy simnet is built
         dict_obj = json.loads(res.content.decode())
         _LOG.info(dict_obj['lname'])
-        return dict_obj['lname']
+        return dict_obj
 
     def get_pipe(self, pipe, prop):
 
@@ -189,6 +189,29 @@ class RESTApi(object):
         _LOG.info("value:__{} get full pipe---Success".format(value))
         return value
 
+    def get_summary_struct(self):
+        pipe = 'dummy'
+        url_spec = self.url + 'api/summary_d/'
+        values_ = """{"pipe": """ + '"' + pipe \
+                  + '"' + "}"""
+        values = urllib.parse.quote(str(values_))
+        # hack to raplace from double to single quotation mark (fixme fat)
+        d1 = values.replace("%27", "%22")
+        url_query = url_spec + d1
+        res = requests.get(url_query)
+        try:
+            dict_obj = json.loads(res.content.decode())
+            property = dict_obj['lname']  # property
+            value = dict_obj['fname']  # value'
+        except:
+            dict_obj = -1
+            property = -1
+            value = -1
+        # pipe = dict_obj['pipe']
+
+        _LOG.info("value:__{} get full pipe---Success".format(value))
+        return value
+
     def get_unit_struct(self, pipe):
 
         url_spec = self.url + 'api/unit_d/'
@@ -216,8 +239,9 @@ class RESTApi(object):
 def defaulttest():
     # test script
     # connect and load flowsheet
-    url = "http://178.164.32.34:5001/"
+    url = "http://127.0.0.1:5001/"
     flowsheet = 'ExampleAbsorber'
+    flowsheet = 'ExampleTillerClosedLoop_val_orig_astarita_ng'
 
     # setup class
     obj = RESTApi(url, flowsheet)
@@ -252,8 +276,13 @@ def defaulttest():
     obj.set_pipe_components('P01', molar_vec)
     pipe_dict = obj.get_pipe_struct('P02')
     pipe_dict['amine']
-    unit_dict = obj.get_unit_struct('Absorber')
-    unit_dict['type']
+    #unit_dict = obj.get_unit_struct('Absorber')
+    #unit_dict['type']
+
+    var = obj.get_unit(unit, prop)
+
+    struct = obj.get_summary_struct()
+    a=1
 
 
 if __name__ == '__main__':
