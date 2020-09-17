@@ -2,7 +2,7 @@
 ## Running simulations on a server with OpenAPI (swagger)
 
 This code uses open source packages enabling access to python or matlab methods on a server, through a rest API using the swagger framework.
-The intention is to show how one can access own simulation models by setting up methods with pre-set signatures. 
+The intention is to access own simulation environments by setting up methods with pre-set API signatures. 
   
 ### Used languages 
 
